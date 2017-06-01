@@ -7,5 +7,5 @@ In **SHEEP**,
 * tensors and tensor algorithms can be specified.
 * tensor components can be manipulated.
 * differentiate algebraic expressions can be read, written, simplified, substituted.
-* perturbation calculations can done. 
+* perturbation calculations can be done. 
 * The Einstein tensor can be derived from a metric in a tetrad or in a coordinate frame.
