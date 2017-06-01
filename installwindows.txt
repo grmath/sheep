@@ -1,0 +1,101 @@
+How to set up Sheep and Classi on Windows
+
+A very short incomplete instruction:
+
+[Written by Jan Aman, with addenda by Malcolm MacCallum]
+
+Install Cygwin [from http://www.cygwin.com/] on your Windows
+computer. You will need quite a lot of the stuff including svn, make
+and probably ssh. [A full list of what is needed is given on the
+reduce-algebra web site listed below.]
+
+Install latest version of Reduce from sourceforge.net, use svn.
+The PSL version is more useful than the CSL version.
+
+[Added by MM
+To do this:
+
+1. First download Reduce from http://reduce-algebra.sourceforge.net/
+using the svn command described in the general installation
+instructions, i.e.
+svn co https://reduce-algebra.svn.sourceforge.net/svnroot/reduce-algebra reduce-algebra
+I have not checked if the prepackaged versions work (Jan advises that
+he cannot recommend the prepackaged October 2010 version: several
+problems of importance to Sheep/classi were fixed later.)
+
+2. In your reduce-algebra/trunk directory run
+./configure --with-psl
+
+3. To build Reduce you should now be able to just type
+make
+
+The files will be in 
+reduce-algebra/trunk/pslbuild/i686-pc-windows
+where 
+i686-pc-windows
+will be replaced by the combination of machine and OS type configure
+diagnoses for your system.]
+
+Unpack Sheep and Classi files from shp062win.tar.gz available
+on request or at pccge20b.ugent.be:~jan/sheep (or
+www.maths.qmul.ac.uk/~mm/shp)
+
+Go into sheep/062/psl and fix symbolic links to fit your computer,
+if directory sheep is placed in parallel with reduce-algebra the
+existing links will be OK. Edit make-bare-psl if you have different
+directory structure. You may also need to edit the directory names
+in sheep/062/psl/psl, sheep/062/psl/make-bare-psl and
+sheep/062/.pslrc to fit your system. (And later similarly edit .shprc
+and .reducerc)
+
+Run make-bare-psl.
+
+Go to 062/slsrc/psl and modify directories and DOMAINNAME in
+startlisp and in startreduce.
+
+Go 'make slisp'.
+
+Start slisp and check the value of SYSTYPE!* , if wrong data
+change in startlisp (startreduce) or in systyp.sl.
+
+It may be a good idea to look at logfiles in 062/plog.
+
+Go to 062/shpsrc/psl and 'make sheep' and to clasrc/psl
+and 'make classi'.
+
+If things are OK 'make classi' and 'make rclassi' in sheep/062
+should work quicker.
+
+The stensor makes do not currently work correctly, apparently due to
+problems in calling sparsify, but do leave correct images with the
+names stensor.img and rtensor.img. Rename these to pstensor.img and
+prtensor.img and move them to the img directory and all should work
+fine.
+
+To start the working versions use scripts in sheep/bin, edit
+e.g. classi to provide correct location of the sheep directory
+(if not D:/sheep). Link it to sheep, slisp, rclassi, rsheep
+and rslisp and place it in a directory in your PATH (e.g.
+/usr/local/bin) or include sheep/bin in your PATH or start
+with a Windows icon. (Switches -o , -s and -n are not flexible
+as only Cygwin but not Windows images follow symbolic links)
+
+[Alan Barnes has reported a problem under Windows 7 (and Vista?)
+with the classi version but not the rclassi version. We have not seen
+this problem yet.]
+
+If you use provided images instead of recompiling it is
+possible to fix some minor problems by adding commands like
+(SETSYSTYPE 'DOMAIN "ugent.be") in 062/sclassi.ini, ssheep.ini
+and sslisp.ini to fix SYSTYPE!* and MSEARCHLIS!*.
+
+For CSL the Reduce interface will not work properly yet and
+as redirection of standard input or output seem not to work
+logfiles can not be created and checked and also makefiles
+can be used only if you manually give some commands to CSL to
+load files etc.
+
+In order to test Classi with clasrc/psl/alltst you must
+first go into /bin/csh, this applies also to 062/mkdisttape.
+
+Report problems!

@@ -1,0 +1,109 @@
+Installing PSL-based Sheep etc under Linux
+==========================================
+
+These instructions have been tested under Scientific Linux 5.2 and
+5.5. It is highly probable but not certain they will run in other
+Linux flavours. Please report problems to me.
+
+1. First download Reduce from http://reduce-algebra.sourceforge.net/
+I did this using the svn command described in the general installation
+instructions, i.e.
+svn co https://reduce-algebra.svn.sourceforge.net/svnroot/reduce-algebra reduce-algebra
+I have not checked if the prepackaged versions work (Jan advises that
+he cannot recommend the prepackaged October 2010 version: several
+problems of importance to Sheep/classi were fixed later.)
+
+2. In your reduce-algebra/trunk directory run
+./configure --with-psl
+
+3. To build Reduce you should now be able to just type
+make
+
+The files will be in 
+reduce-algebra/trunk/pslbuild/i686-unknown-scientificlinux5.2
+where 
+i686-unknown-scientificlinux5.2
+will be replaced by the combination of machine and OS type configure
+diagnoses for your system. I will call it XXX from now on
+
+4. Now you need the Sheep source tree, which you can unpack
+from sheep.tar.gz. We refer to the 062 tree as
+rooted at sheep/062. First link sheep/062 to sheep/shp.
+Then link
+reduce-algebra/trunk/pslbuild/XXX/psl/bpsl to
+bpsl in sheep/062/psl . Link
+reduce-algebra/trunk/psl/bin/linux/sparsify
+to sheep/062/psl/sparsify . 
+Then edit the directory names in sheep/062/psl/psl,
+sheep/062/psl/make-bare-psl and sheep/062/.pslrc to
+fit your system. Run
+source sheep/062/.pslrc
+Then, in sheep/062/psl run
+make-bare-psl
+
+If you have a file reduce-algebra/trunk/psl/bin/linux/.imago which
+Sheep expects to be absent when an extension .img is needed, the
+sparsify command in the makefile will fail You can simply do
+sparsify bare-psl.img 
+separately of course.
+
+5. If all is well, edit the directory names in sheep/062/.shprc
+  to suit your system and do
+source sheep/062/.shprc
+[You may also want to use the more extensive possibilities of
+  sheep/062/.shpmanrc. If so, edit the directories and choice of lisp
+  system there and, e.g. add in a line
+set Lsp = $Lispsys:s/sl//
+Then do
+source sheep/062/.shpmanrc]
+Edit sheep/062/slsrc/psl/startlisp similarly. Check that LspDir in
+   sheep/062/makefile says psl (if not, change it!) Then run
+make all
+(or just say make). This should make slisp, sheep, classi and stensor,
+but it may fail at the comparisons of log files, made to check that
+the build has worked correctly. This is because the comparator files
+may be from a different operating system etc. In that case run each of
+the makes separately e.g.
+cd clasrc/psl; make
+To make the Reduce/Sheep counterparts, source .reducerc and run
+make allr
+(with similar comments about possible failure).
+[Note: you may want to edit the makefiles called by the top level 'make'
+  e.g. to call sparsify properly]
+
+6. Modify the script sheep/bin/sheep to fit the file locations on your
+system. A sensible editor will ensure the other names of this file are
+transferred to the new file. The .shprc will have put this directory
+into your path so you should now be able to run (e.g.) classi by
+typing simply
+classi
+You may want to edit your sslisp.ini, ssheep.ini
+etc. For documentation on the various programs see sheep/doc. You may
+also find the part on Sheep etc in the book "Algebraic computing in
+general relativity (Proceedings of the first Brazilian school on
+computer algebra, vol 2)" ed. M.J. Rebou\c{c}as and W.L. Roque, Oxford
+University Press, Oxford (1994) helpful, if that is available to you
+
+Please let me know of any failures by the resulting versions of
+sheep. I have done some minimal tests on my own system (e.g. that
+schwar.crd runs fine in sheep, kerrnw.lor in classi, and
+identi.def in stensor) and others are done automatically by the make
+processes, but these are far from comprehensive.
+
+I have moved the whole reduce and sheep file trees to a separate
+system and checked the steps above work with those trees.
+
+File space issues
+=================
+
+The reduce and sheep source trees contain much material that is not
+needed by a particular installation. For example, all csl files in
+both reduce and sheep can be removed from a psl installation; within
+the sheep file tree one can remove many old log files; if you do not
+intend to use stensor it can be deleted. And so on. It is very
+worthwhile to use sparsify on all images it you can: for example on
+the installation test system this step, done for the 8 images created,
+led to recovery of 67 Mb.
+
+Malcolm MacCallum
+June 2011
